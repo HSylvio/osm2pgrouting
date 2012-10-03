@@ -177,19 +177,24 @@ void OSMDocumentParserCallback::StartElement( const char *name, const char** att
 				// std::cout<<"k: "<<k<<", v: "<<v<<std::endl;
 				// std::cout<<"m_pActWay: "<<m_rDocument.m_rConfig.m_Types.count(k)<<std::endl;
 				// std::cout<<"thecount: "<<m_rDocument.m_rConfig.m_Types.count(k)<<std::endl;
-				if( m_pActWay && k.compare("name")==0 )
+				if( m_pActWay)
+				if ( k.compare("name")==0 )
 				{
 					m_pActWay->name = v;
 				}
-				// else if( m_pActWay && k.compare("oneway")==0 )
-				// {
-				//	m_pActWay->oneway = true;					
-				//	std::cout<<"Edge "<<m_pActWay->id<<" is oneway"<<std::endl;
+				else if(  k.compare("oneway")==0 )
+					{
+	//					if (!v.compare("false") || !v.compare("no") || !v.compare("0"))
+						if (!v.compare("true") || !v.compare("yes") || !v.compare("1"))
+							m_pActWay->oneway = true;
+	//					std::cout<<"Edge "<<m_pActWay->id<<" has oneway entry with value "<< v <<std::endl;
+	//					m_pActWay->oneway = std::string(v);
+					}
+//					m_pActWay->oneway = true;					
+//					std::cout<<"Edge "<<m_pActWay->id<<" is oneway"<<std::endl;
 
-				// }
-				
 				//else if( m_pActWay && k.compare("highway")==0 )
-				else if( m_pActWay && m_rDocument.m_rConfig.m_Types.count(k) )				
+				if( m_rDocument.m_rConfig.m_Types.count(k) )				
 				{
 					m_pActWay->type = k;
 					m_pActWay->clss = v;
